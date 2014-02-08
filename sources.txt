@@ -1,0 +1,2 @@
+http://feeds.feedburner.com/RockPaperShotgun?format=xml
+http://feeds.arstechnica.com/arstechnica/index?format=xml
