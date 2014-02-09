@@ -6,6 +6,8 @@ import MySQLdb as mdb
 import feedparser
 import sys
 from testfnc import svdata
+import json
+
 
 # Importing data from "sources.txt" file
 source = 'sources.txt'
@@ -36,22 +38,27 @@ svdata(data, auxdata, auxtxt)
 #.# Declaration lists
 
 tls = [] # titles list
+tls_json = [] # titles json list
 lls = [] # links list
+lls_json = [] # links json list
 cls = [] # content list
+cls_json = [] # content json list
 for m in range(lsrc):
 	slng = len(data[m])
 	for n in range(slng):
 	# Atom XML RSS
 		# titles
 		tls.append(data[m].entries[n].title)
+		tls_json.append(json.dumps(tls[n]))
 		# links
 		lls.append(data[m].entries[n].feedburner_origlink)
+		lls_json.append(json.dumps(lls[n]))
 		# content
 		cls.append(data[m].entries[n].content)
+		cls_json.append(json.dumps(cls[n]))
 
-	
 
-
+print len(tls_json)	
 # MySQL Connection
 
 dbcon = mdb.connect('localhost','root','.staticx12','testdb')
@@ -62,5 +69,7 @@ with dbcon:
 	dbcrs = dbcon.cursor()
 	dbcrs.execute("DROP TABLE IF EXISTS Titles")
 	dbcrs.execute("CREATE TABLE Titles(Id INT PRIMARY KEY AUTO_INCREMENT, Title VARCHAR(255))")
-	dbcrs.execute("INSERT INTO Titles(Title)",tls[0])
+	len_json = len(tls_json)
+	for p in range(len_json):
+		dbcrs.execute("INSERT INTO Titles VALUES %s", tls_json[p])
 
