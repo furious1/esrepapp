@@ -57,19 +57,24 @@ for m in range(lsrc):
 		cls.append(data[m].entries[n].content)
 		cls_json.append(json.dumps(cls[n]))
 
+print len(cls_json[0])
+print cls_json[0]
 
-print len(tls_json)	
 # MySQL Connection
 
 dbcon = mdb.connect('localhost','root','.staticx12','testdb')
 
 # Cursor
-
+qwe = tls_json[0]
 with dbcon:
 	dbcrs = dbcon.cursor()
-	dbcrs.execute("DROP TABLE IF EXISTS Titles")
-	dbcrs.execute("CREATE TABLE Titles(Id INT PRIMARY KEY AUTO_INCREMENT, Title VARCHAR(255))")
+	# Creating the needed tables
+	dbcrs.execute("DROP TABLE IF EXISTS Feeds")
+	dbcrs.execute("CREATE TABLE Feeds(Id INT PRIMARY KEY AUTO_INCREMENT, Title VARCHAR(255), Link VARCHAR(255))")
+
 	len_json = len(tls_json)
 	for p in range(len_json):
-		dbcrs.execute("INSERT INTO Titles VALUES %s", tls_json[p])
+		dbcrs.execute("INSERT INTO Feeds(Title,Link) VALUES(%s,%s)", (tls_json[p],lls_json[p]))
+		
+
 
