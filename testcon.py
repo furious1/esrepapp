@@ -65,7 +65,6 @@ print cls_json[0]
 dbcon = mdb.connect('localhost','root','.staticx12','testdb')
 
 # Cursor
-qwe = tls_json[0]
 with dbcon:
 	dbcrs = dbcon.cursor()
 	# Creating the needed tables
